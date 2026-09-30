@@ -75,4 +75,12 @@ Data: Google Merchandise Store, Nov 2020 – Jan 2021.
 
 ## Run it yourself
 
-See [SETUP.md](SETUP.md) for the full step-by-step guide.
+Quick start (full guide in [SETUP.md](SETUP.md)):
+
+```bash
+pip install -r requirements-dev.txt
+python -m ingestion.fetch_rates
+cd dbt_project && dbt build --profiles-dir . --target dev
+```
+
+Or run everything in Docker, or orchestrate it with Airflow via `docker compose up`.
