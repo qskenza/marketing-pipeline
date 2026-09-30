@@ -53,17 +53,22 @@ flowchart LR
 
 ## Key insights
 
-<!-- TODO: fill in after building the dashboard, with real numbers -->
-- ...
-- ...
-- ...
+Data: Google Merchandise Store, Nov 2020 – Jan 2021.
+
+- **Organic Search is the #1 revenue channel** (~29% of revenue, highest average order value at €60.18), driven by volume rather than efficiency (1.01% conversion).
+- **Referral converts best** (1.56%, ~1.5× Organic Search), showing stronger purchase intent from referred visitors.
+- **Paid Search underperforms** on every metric: lowest conversion (0.84%), lowest average order value (€47.50), ~2% of revenue. Recommendation: review paid search efficiency and test shifting budget toward referral partnerships.
+- **Data quality note:** ~23% of revenue is attributed to "Unknown" sources due to the dataset's anonymization.
 
 ## Screenshots
 
-<!-- TODO: add screenshots in a docs/ folder -->
-- dbt lineage graph
-- Airflow successful run
-- Looker Studio dashboard
+### dbt lineage graph
+![dbt lineage graph](docs/dbt_lineage.png)
+
+### BigQuery datasets
+![BigQuery datasets](docs/bigquery-datasets.png)
+
+<!-- TODO: add the Airflow run and Looker Studio dashboard screenshots -->
 
 ## Run it yourself
 
