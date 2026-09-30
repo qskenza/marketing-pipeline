@@ -1,5 +1,3 @@
-Built by Kenza Qribis — [Portfolio](https://qskenza.github.io)
-
 # Marketing Performance Pipeline
 
 End-to-end data engineering project on Google Cloud: ingest, transform, test, orchestrate
@@ -72,6 +70,11 @@ Data: Google Merchandise Store, Nov 2020 – Jan 2021.
 
 ### Airflow run
 ![Airflow DAG run](docs/airflow-run.png)
+
+### Looker Studio dashboard
+![Dashboard](docs/dashboard.png)
+
+[Open the live dashboard](https://datastudio.google.com/reporting/eec3dbe1-e68a-4869-b22b-9264080cf376)
 
 ## Run it yourself
 
