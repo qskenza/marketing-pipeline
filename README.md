@@ -1,5 +1,3 @@
-Built by Kenza Qribis — [Portfolio](https://qskenza.github.io)
-
 # Marketing Performance Pipeline
 
 End-to-end data engineering project on Google Cloud: ingest, transform, test, orchestrate
