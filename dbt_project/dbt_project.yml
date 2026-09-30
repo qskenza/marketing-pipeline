@@ -1,0 +1,24 @@
+name: marketing_pipeline
+version: "1.0.0"
+config-version: 2
+profile: marketing_pipeline
+
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  # Date range of the GA4 public sample (Google Merchandise Store)
+  ga4_start_date: "20201101"
+  ga4_end_date: "20210131"
+
+models:
+  marketing_pipeline:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: table
+    marts:
+      +materialized: table

@@ -1,0 +1,23 @@
+# Local Airflow (single container, "standalone" mode) - UI at http://localhost:8080
+services:
+  airflow:
+    build:
+      context: .
+      dockerfile: orchestration/Dockerfile
+    command: standalone
+    ports:
+      - "8080:8080"
+    env_file: .env
+    environment:
+      # Overrides the local path from .env with the path inside the container
+      GOOGLE_APPLICATION_CREDENTIALS: /opt/airflow/keys/gcp-key.json
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      # dbt writes its artifacts in /tmp instead of the mounted project folder
+      DBT_TARGET_PATH: /tmp/dbt_target
+      DBT_LOG_PATH: /tmp/dbt_logs
+      DBT_TARGET: dev
+    volumes:
+      - ./orchestration/dags:/opt/airflow/dags
+      - ./ingestion:/opt/airflow/project/ingestion
+      - ./dbt_project:/opt/airflow/project/dbt_project
+      - ./keys/gcp-key.json:/opt/airflow/keys/gcp-key.json:ro

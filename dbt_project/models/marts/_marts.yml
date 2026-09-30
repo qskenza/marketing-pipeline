@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: One row per order (deduplicated purchase events) with revenue in USD, EUR, GBP.
+    columns:
+      - name: transaction_id
+        data_tests: [unique, not_null]
+      - name: channel
+        data_tests: [not_null]
+      - name: session_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('int_sessions')
+                field: session_key
+      - name: revenue_usd
+        data_tests: [non_negative]
+      - name: revenue_eur
+        data_tests: [non_negative]
+
+  - name: mart_channel_performance
+    description: Sessions, orders, revenue and conversion rate per marketing channel.
+    columns:
+      - name: channel
+        data_tests: [unique, not_null]
+      - name: conversion_rate
+        data_tests: [between_zero_and_one]
+
+  - name: mart_funnel_conversion
+    description: Purchase funnel by channel and device.
+    columns:
+      - name: view_item_rate
+        data_tests: [between_zero_and_one]
+      - name: add_to_cart_rate
+        data_tests: [between_zero_and_one]
+      - name: begin_checkout_rate
+        data_tests: [between_zero_and_one]
+      - name: purchase_rate
+        data_tests: [between_zero_and_one]

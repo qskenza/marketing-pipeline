@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Lint (ruff)
+        run: ruff check .
+
+      - name: Unit tests (pytest)
+        run: pytest -v
+
+  dbt-build:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    env:
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      BQ_RAW_DATASET: mkt_raw
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: dbt build on the CI dataset
+        working-directory: dbt_project
+        run: dbt build --profiles-dir . --target ci

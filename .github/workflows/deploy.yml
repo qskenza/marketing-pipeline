@@ -1,0 +1,59 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  run-pipeline-prod:
+    runs-on: ubuntu-latest
+    env:
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      BQ_RAW_DATASET: mkt_raw
+      BQ_LOCATION: US
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Ingest exchange rates
+        run: python -m ingestion.fetch_rates
+
+      - name: dbt build on production
+        working-directory: dbt_project
+        run: dbt build --profiles-dir . --target prod
+
+  publish-docker-image:
+    needs: run-pipeline-prod
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest

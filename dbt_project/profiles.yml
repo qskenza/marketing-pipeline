@@ -1,0 +1,34 @@
+# Credentials come from environment variables, never from this file.
+marketing_pipeline:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS') }}"
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: mkt_dev
+      location: US
+      threads: 4
+      job_execution_timeout_seconds: 300
+      priority: interactive
+    ci:
+      type: bigquery
+      method: service-account
+      keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS') }}"
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: mkt_ci
+      location: US
+      threads: 4
+      job_execution_timeout_seconds: 300
+      priority: interactive
+    prod:
+      type: bigquery
+      method: service-account
+      keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS') }}"
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: mkt_prod
+      location: US
+      threads: 4
+      job_execution_timeout_seconds: 300
+      priority: interactive
