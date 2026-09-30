@@ -68,7 +68,8 @@ Data: Google Merchandise Store, Nov 2020 – Jan 2021.
 ### BigQuery datasets
 ![BigQuery datasets](docs/bigquery-datasets.png)
 
-<!-- TODO: add the Airflow run and Looker Studio dashboard screenshots -->
+### Airflow run
+![Airflow DAG run](docs/airflow-run.png)
 
 ## Run it yourself
 
